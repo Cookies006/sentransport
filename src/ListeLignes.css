@@ -1,0 +1,15 @@
+.liste-lignes {
+padding : 0 16 px ;
+}
+
+.liste-titre {
+color: #2c3e50 ;
+font-size: 1.4 rem ;
+margin-bottom : 4 px ;
+}
+.liste-description {
+color : #7f8c8d ;
+font-size : 0.9 rem ;
+margin-top : 0;
+margin-bottom : 16 px ;
+}

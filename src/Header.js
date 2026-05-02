@@ -7,6 +7,7 @@ function Header() {
         <p className="header-soustitre">
             Votre guide du transport en commun à Dakar
         </p>
+        <p className="header-date">{new Date().toLocaleDateString('fr-FR')}</p>
         </header>
     );
 }
