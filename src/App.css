@@ -33,3 +33,16 @@ padding:12px;
     margin-right: 12px;
   }
 }
+
+.aucune-ligne {
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 1rem;
+  margin-top: 40px;
+}
+
+.compteur-recherche {
+  color: #7f8c8d;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
