@@ -32,6 +32,12 @@ def get_ligne(ligne_id):
 
     return jsonify(ligne)
 
+with open("arrets.json", "r") as f:
+    arrets = json.load(f)
+
+@app.route("/arrets")
+def get_arrets():
+    return jsonify(arrets)
 
 
 @app.route("/arrets")

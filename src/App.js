@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-
+import Carte from './Carte';
 import Header from './Header';
 import Recherche from './Recherche';
 import LigneBus from './LigneBus';
@@ -47,14 +47,40 @@ function App() {
   );
 
   function handleClickLigne(ligne) {
-    if (
-      ligneSelectionnee &&
-      ligneSelectionnee.id === ligne.id
-    ) {
-      setLigneSelectionnee(null);
-    } else {
-      setLigneSelectionnee(ligne);
-    }
+  if (ligneSelectionnee && ligneSelectionnee.id === ligne.id) {
+    setLigneSelectionnee(null);
+  } else {
+    fetch(`http://localhost:5000/lignes/${ligne.id}`)
+      .then(response => response.json())
+      .then(data => {
+        setLigneSelectionnee(data);
+      })
+      .catch(error => {
+        console.error("Erreur chargement détail :", error);
+      });
+  }
+}
+
+
+
+   function chargerLignes() {
+    setChargement(true);
+    setErreur(null);
+    fetch("http://localhost:5000/lignes")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erreur serveur : " + response.status);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setLignes(data);
+        setChargement(false);
+      })
+      .catch(error => {
+        setErreur(error.message);
+        setChargement(false);
+      });
   }
 
   if (chargement) {
@@ -96,15 +122,36 @@ function App() {
     );
   }
 
+  if (erreur) {
+    return (
+      <div className="App">
+        <Header />
+        <main className="contenu">
+          <div className="message-erreur">
+            <p>Impossible de charger les lignes.</p>
+            <p className="erreur-detail">{erreur}</p>
+            <p>Vérifiez que le serveur Flask est lancé.</p>
+            <button onClick={chargerLignes}>Recharger</button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <Header />
+
+
 
       <main className="contenu">
         <Recherche
           valeur={recherche}
           onChange={setRecherche}
         />
+
+      <button className="bouton-recharger" onClick={chargerLignes}>Recharger</button>
+
 
         <p className="resultat-recherche">
           {lignesFiltrees.length} ligne
@@ -128,14 +175,17 @@ function App() {
               handleClickLigne(ligne)
             }
           />
-        ))}
+        ))}  
+
 
         {ligneSelectionnee && (
           <DetailLigne
             ligne={ligneSelectionnee}
           />
         )}
+        <Carte /> {/* NOUVEAU */}
       </main>
+
 
       <Footer />
     </div>
